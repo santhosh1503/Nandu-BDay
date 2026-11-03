@@ -1,0 +1,208 @@
+body{
+ 
+    height: 100%;
+    margin: 0;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-image: url(https://www.icegif.com/wp-content/uploads/2022/10/icegif-310.gif);  
+    background-size: cover;
+}
+.countdown {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	width: min(384px, calc(100vw - 32px));
+	box-sizing: border-box;
+	margin: 0;
+	padding: 30px 24px 26px;
+	border: 3px solid transparent;
+	background: linear-gradient(rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.92)) padding-box,
+		conic-gradient(#ef476f 0 25%, #ffd166 25% 50%, #06d6a0 50% 75%, #118ab2 75% 100%) border-box;
+	box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+	color: #331717;
+	font-family: Georgia, 'Times New Roman', serif;
+	text-align: center;
+	transform: translate(-50%, -50%);
+}
+.countdown-title {
+	margin: 0 auto 8px;
+	color: #800000;
+	font-size: 28px;
+	line-height: 1.1;
+}
+.countdown-message {
+	margin: 0 auto 22px;
+	font-size: 16px;
+}
+.countdown-value {
+	margin: 0;
+	color: #800000;
+	font-size: 60px;
+	font-weight: bold;
+	line-height: 1;
+	font-variant-numeric: tabular-nums;
+}
+.countdown-label {
+	margin: 8px 0 0;
+	font-size: 13px;
+	font-weight: bold;
+}
+[hidden] {
+	display: none !important;
+}
+.card {
+	 position: relative;
+	 width: min(300px, calc(100vw - 52px));
+	 height: 425px;
+	 border: 10px solid #c2cf07ad;
+	 margin: 60px auto 0 auto;
+	 box-shadow: inset 10px 0px 15px 0px rgba(0, 0, 0, 0.1);
+     background-image: linear-gradient(to bottom, rgba(255, 255, 255), rgba(255, 255, 255, 0.5)), url("https://images.unsplash.com/photo-1527481138388-31827a7c94d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60");
+
+	background-position: center; /* Center the image */
+    background-repeat: no-repeat; /* Do not repeat the image */
+    background-size: cover;
+	background-color: #e6f0e6;
+}
+ .card .text-container {
+	 width: 80%;
+	 height: 80%;
+	 margin: auto;
+}
+ .strikethrough {
+	 text-decoration: line-through;
+}
+ .card .text-container #head {
+	 font-family: 'Nobile', sans-serif;
+	 font-size: 1.5em;
+	 margin: 38px auto 36px;
+	 text-align: center;
+}
+.card .text-container h5 {
+	 margin: 0 auto 20px;
+	 font-size: 1.1em;
+	 line-height: 1.35;
+	 text-align: center;
+}
+ .card p {
+	 font-size: 1.1em;
+	 line-height: 1.4;
+	 font-family: 'Nobile';
+	 color: #331717;
+	 font-style: italic;
+	 text-align: center;
+	 margin: 18px auto 0;
+}
+ .card .front {
+	 position: absolute;
+	 width: 100%;
+	 height: 100%;
+	 margin: -10px 0px 0px -10px;
+	 border: 10px solid bisque;
+	 backface-visibility: hidden;
+	 background-color: #309a13;
+	/* background-image: url($cover-image);
+	 */
+	 background-size: contain;
+	 transform-style: preserve-3d;
+	 transform-origin: 0% 50%;
+	 transform: perspective(800px) rotateY(0deg);
+	 transition: all 0.8s ease-in-out;
+}
+ .card:hover .front {
+	 transform: perspective(800px) rotateY(-170deg);
+	 background-color: #41718dbd;
+}
+ .card:hover .back {
+	 transform: perspective(800px) rotateY(-170deg);
+	 box-shadow: 7px 0px 5px 0px rgba(0, 0, 0, 0.3), inset 2px 0px 15px 0px rgba(0, 0, 0, 0.1);
+	 background-color: #d2dcd2;
+}
+ .card .back {
+	 position: absolute;
+	 width: 100%;
+	 height: 100%;
+	 border: 10px solid #9ebdd2;
+	 margin: -10px 0px 0px -10px;
+	 backface-visibility: visible;
+	 filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, .5));
+	 transform-style: preserve-3d;
+	 transform-origin: 0% 50%;
+	 transform: perspective(800px) rotateY(0deg);
+	 transition: all 0.8s ease-in-out;
+	 background-color: #e6f0e6;
+	 box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0.1);
+}
+
+.imgset
+{
+  position: relative;
+  z-index: 1;
+  margin-bottom: -215px;
+}
+.imgset img
+{
+    box-shadow: 0px 6px 11px 7px rgba(0, 0, 0, 0.22);
+    border-radius: 5px;
+}
+.gift-button {
+	position: absolute;
+	bottom: 20px;
+	left: 50%;
+	display: block;
+	visibility: hidden;
+	opacity: 0;
+	pointer-events: none;
+	margin: 0;
+	padding: 14px 22px;
+	border: 0;
+	border-radius: 3px;
+	background: #800000;
+	color: #fff;
+	font: bold 15px sans-serif;
+	text-align: center;
+	text-decoration: none;
+	cursor: pointer;
+	box-shadow: 0 4px 0 #510000;
+	transform: translateX(-50%);
+	transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+.card:hover .gift-button {
+	visibility: visible;
+	opacity: 1;
+	pointer-events: auto;
+}
+@media (hover: none), (pointer: coarse) {
+	.gift-button {
+		visibility: visible;
+		opacity: 1;
+		pointer-events: auto;
+	}
+}
+.gift-button::before {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 8px;
+	background: #f3c7c7;
+}
+.gift-button::after {
+	content: "";
+	position: absolute;
+	top: -9px;
+	left: 50%;
+	width: 28px;
+	height: 12px;
+	border: 3px solid #f3c7c7;
+	border-radius: 50% 50% 0 50%;
+	transform: translateX(-50%) rotate(-12deg);
+}
+.gift-button:hover {
+	background: #690000;
+}
+.gift-button:focus-visible {
+	outline: 3px solid #fff;
+	outline-offset: 4px;
+}

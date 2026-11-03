@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Image Slider</title>
+	<style type="text/css">
+		*{
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+		body{
+			position: relative;
+			width: 100%;
+			min-height: 100vh;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			overflow: hidden;
+			font-family: Arial, sans-serif;
+			background: linear-gradient(135deg, #ffebf0 0%, #f9d9ff 30%, #d8f4ff 70%, #fff4c2 100%);
+		}
+		.balloon {
+			position: absolute;
+			bottom: -220px;
+			width: 80px;
+			height: 100px;
+			border-radius: 50% 50% 48% 48%;
+			background: linear-gradient(135deg, rgba(255,255,255,0.4), rgba(255,255,255,0.1));
+			box-shadow: inset -8px -8px 18px rgba(255,255,255,0.35), inset 8px 8px 18px rgba(255,255,255,0.2), 0 0 12px rgba(255,255,255,0.25);
+			animation: floatBalloon linear infinite;
+		}
+		.balloon::before {
+			content: "";
+			position: absolute;
+			left: 50%;
+			bottom: -70px;
+			transform: translateX(-50%);
+			width: 2px;
+			height: 70px;
+			background: rgba(95, 62, 91, 0.5);
+		}
+		.balloon::after {
+			content: "";
+			position: absolute;
+			left: 50%;
+			bottom: -12px;
+			transform: translateX(-50%);
+			width: 10px;
+			height: 10px;
+			border-radius: 50%;
+			background: rgba(255,255,255,0.7);
+		}
+		@keyframes floatBalloon {
+			0% { transform: translateY(0) scale(1) rotate(0deg); opacity: 0.8; }
+			50% { transform: translateY(-55vh) scale(1.08) rotate(2deg); opacity: 1; }
+			100% { transform: translateY(-110vh) scale(1) rotate(-2deg); opacity: 0.85; }
+		}
+		.title-birthday {
+			position: absolute;
+			top: 30px;
+			left: 50%;
+			transform: translateX(-50%);
+			text-align: center;
+			z-index: 5;
+			color: #8b1e5d;
+			text-shadow: 0 4px 12px rgba(255,255,255,0.7);
+		}
+		.title-birthday h1 {
+			font-size: clamp(2rem, 4vw, 4rem);
+			letter-spacing: 2px;
+			font-weight: 700;
+		}
+		.title-birthday p {
+			font-size: clamp(1rem, 2vw, 1.5rem);
+			letter-spacing: 1px;
+			margin-top: 5px;
+			font-weight: 600;
+		}
+		.slide-container{
+			position: relative;
+			width: min(95vw, 1100px);
+			height: 420px;
+			max-width: 100%;
+			border: 3px solid #ede6d6;
+			box-shadow: 0 0 8px 2px rgba(0,0,0,0.2);
+			transition: width 0.3s ease, height 0.3s ease;
+		}
+		.slide-container .slides{
+			width: 100%;
+			height: calc(100% - 40px);
+			position: relative;
+			overflow: hidden;
+		}
+		.slide-container .slides img{
+			width: 100%;
+			height: 100%;
+			position: absolute;
+			object-fit: contain;
+			background: #f4f1eb;
+		}
+		.slide-container .slides img.active {
+			left: 0;
+		}
+		.slide-container .slides img:not(.active){
+			top: 0;
+			left: -100%;
+		}
+		span.next, span.prev{
+			position: absolute;
+			top: 50%;
+			transform: translateY(-50%);
+			padding: 14px;
+			color: #eee;
+			font-size: 24px;
+			font-weight: bold;
+			transition: 0.5s;
+			border-radius: 3px;
+			user-select: none;
+			cursor: pointer;
+			z-index: 1;
+		}
+		span.next{
+			right: 20px;
+		}
+		span.prev{
+			left: 20px;
+		}
+		span.next:hover, span.prev:hover{
+			background-color: #ede6d6;
+			opacity: 0.8;
+			color: #222;
+		} 
+		.dotsContainer{
+			position: absolute;
+			bottom: 5px;
+			z-index: 3;
+			left: 50%;
+			transform: translateX(-50%);
+		}
+		.dotsContainer .dot{
+			width: 15px;
+			height: 15px;
+			margin: 0px 2px;
+			border: 3px solid #bbb;
+			border-radius: 50%;
+			display: inline-block;
+			cursor: pointer;
+			transition: background-color 0.6s ease;
+		}
+		.dotsContainer .active{
+			background-color: #555;
+		}
+
+		@keyframes next1{
+			from{
+				left: 0%
+			}
+			to{
+				left: -100%;
+			}
+		}
+		@keyframes next2{
+			from{
+				left: 100%
+			}
+			to{
+				left: 0%;
+			}
+		}
+
+		@keyframes prev1{
+			from{
+				left: 0%
+			}
+			to{
+				left: 100%;
+			}
+		}
+		@keyframes prev2{
+			from{
+				left: -100%
+			}
+			to{
+				left: 0%;
+			}
+		}
+
+	</style>
+</head>
+<body>
+
+<div class="title-birthday">
+	<h1>Happy Birthday</h1>
+	<p>May your day be full of joy and surprises!</p>
+</div>
+
+<div class="balloon" style="left: 8%; background: linear-gradient(135deg, #ff8ab5, #ffb6d5); animation-duration: 12s; animation-delay: 0s;"></div>
+<div class="balloon" style="left: 22%; background: linear-gradient(135deg, #ffd166, #ffe39a); animation-duration: 15s; animation-delay: 2s;"></div>
+<div class="balloon" style="left: 38%; background: linear-gradient(135deg, #7bdff2, #b6efff); animation-duration: 13s; animation-delay: 1s;"></div>
+<div class="balloon" style="left: 58%; background: linear-gradient(135deg, #b8f2a1, #d7ffd4); animation-duration: 16s; animation-delay: 3s;"></div>
+<div class="balloon" style="left: 74%; background: linear-gradient(135deg, #b197fc, #d7cbff); animation-duration: 14s; animation-delay: 1.5s;"></div>
+<div class="balloon" style="left: 90%; background: linear-gradient(135deg, #ff9f6e, #ffc4a3); animation-duration: 17s; animation-delay: 2.5s;"></div>
+
+<div class="slide-container">
+	
+	<div class="slides">
+		<img src="image-1.jpg" class="active">
+		<img src="image-2.jpg">
+		<img src="image-3.jpg">
+		<img src="image-4.jpg">
+		<img src="image-5.jpg">
+	</div>
+
+	<div class="buttons">
+		<span class="next">&#10095;</span>
+		<span class="prev">&#10094;</span>
+	</div>
+
+	<div class="dotsContainer">
+		<div class="dot active" attr='0' onclick="switchImage(this)"></div>
+		<div class="dot" attr='1' onclick="switchImage(this)"></div>
+		<div class="dot" attr='2' onclick="switchImage(this)"></div>
+		<div class="dot" attr='3' onclick="switchImage(this)"></div>
+		<div class="dot" attr='4' onclick="switchImage(this)"></div>
+	</div>
+
+</div>
+
+<script type="text/javascript">
+	
+	// Access the Images
+	const slideImages = document.querySelectorAll('.slides img');
+	// Access the next and prev buttons
+	const next = document.querySelector('.next');
+	const prev = document.querySelector('.prev');
+	// Access the indicators
+	const dots = document.querySelectorAll('.dot');
+	const container = document.querySelector('.slide-container');
+	let counter = 0;
+	let autoSlideTimer = null;
+
+	function indicators() {
+		dots.forEach((dot, index) => {
+			dot.classList.toggle('active', index === counter);
+		});
+	}
+
+	function setContainerSize(image) {
+		if (!image) return;
+
+		const ratio = image.naturalWidth / image.naturalHeight;
+		const maxWidth = window.innerWidth * 0.9;
+		const maxHeight = window.innerHeight * 0.7;
+		let width = maxWidth;
+		let height = width / ratio;
+
+		if (height > maxHeight) {
+			height = maxHeight;
+			width = height * ratio;
+		}
+
+		container.style.width = `${Math.min(width, 1100)}px`;
+		container.style.height = `${Math.min(height, 700)}px`;
+	}
+
+	function updateSlide(newIndex, direction) {
+		const currentImage = slideImages[counter];
+		if (!currentImage) return;
+
+		currentImage.classList.remove('active');
+		currentImage.style.animation = direction === 'next' ? 'next1 0.5s ease-in forwards' : 'prev1 0.5s ease-in forwards';
+
+		counter = (newIndex + slideImages.length) % slideImages.length;
+
+		const nextImage = slideImages[counter];
+		if (nextImage) {
+			nextImage.classList.add('active');
+			nextImage.style.animation = direction === 'next' ? 'next2 0.5s ease-in forwards' : 'prev2 0.5s ease-in forwards';
+			setContainerSize(nextImage);
+		}
+
+		indicators();
+	}
+
+	// Code for next button
+	next.addEventListener('click', () => {
+		updateSlide(counter + 1, 'next');
+		startAutoSliding();
+	});
+
+	// Code for prev button
+	prev.addEventListener('click', () => {
+		updateSlide(counter - 1, 'prev');
+		startAutoSliding();
+	});
+
+	function startAutoSliding() {
+		clearInterval(autoSlideTimer);
+		autoSlideTimer = setInterval(() => {
+			updateSlide(counter + 1, 'next');
+		}, 3000);
+	}
+
+	// Auto sliding
+	setContainerSize(slideImages[0]);
+	startAutoSliding();
+
+	// Stop auto sliding when mouse is over
+	container.addEventListener('mouseover', () => {
+		clearInterval(autoSlideTimer);
+	});
+
+	window.addEventListener('resize', () => {
+		setContainerSize(slideImages[counter]);
+	});
+
+	// Resume sliding when mouse is out
+	container.addEventListener('mouseout', startAutoSliding);
+
+	// Add click event to the indicator
+	function switchImage(currentImage) {
+		const imageId = Number(currentImage.getAttribute('attr'));
+		if (Number.isNaN(imageId) || imageId === counter) {
+			return;
+		}
+
+		const direction = imageId > counter ? 'next' : 'prev';
+		updateSlide(imageId, direction);
+		startAutoSliding();
+	}
+
+</script>
+</body>
+</html>

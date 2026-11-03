@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Wishes</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="style.css" media="all">
+</head>
+
+<body>
+<section class="countdown" id="countdown" role="timer" aria-live="off" aria-label="Birthday countdown">
+  <h1 class="countdown-title">Hi Nandu!</h1>
+  <p class="countdown-message">Please wait for the countdown.</p>
+  <p class="countdown-value"><span id="seconds-remaining">60</span></p>
+  <p class="countdown-label">SECONDS TO GO</p>
+</section>
+<div class="card" hidden>
+  <div class="back"></div>
+  <div class="front">
+    <div class="imgset">
+         <img width="100%" src="https://1.bp.blogspot.com/-Mgj9-rbs65E/XfMoPSD5gtI/AAAAAAAAURk/NBokE2gSS2cTSJ2em5lZ5hJDuTtRN7UVwCLcBGAsYHQ/s1600/2713997.png" alt="Birthday cake illustration">
+       </div>
+  </div>
+  <div class="text-container">
+    <p id="head">Happy Birthday!</p>
+    <h5>To <br> Kavya Nandana,</h5>
+    <p>I hope your special day will bring you lots of happiness, love, and fun. You deserve them a lot. Enjoy!</p>
+    <p>Hope your day goes great!</p>
+    <a class="gift-button" href="slideShow.html">Click me for your gift</a>
+  </div>
+</div>
+<script>
+  const countdown = document.getElementById("countdown");
+  const secondsRemaining = document.getElementById("seconds-remaining");
+  const card = document.querySelector(".card");
+  const deadline = Date.now() + 60_000;
+
+  const countdownInterval = window.setInterval(() => {
+    const seconds = Math.max(0, Math.ceil((deadline - Date.now()) / 1000));
+    secondsRemaining.textContent = seconds;
+
+    if (seconds === 0) {
+      window.clearInterval(countdownInterval);
+      countdown.hidden = true;
+      card.hidden = false;
+    }
+  }, 1000);
+</script>
+</body>
+</html>
