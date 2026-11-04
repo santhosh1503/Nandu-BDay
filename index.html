@@ -34,6 +34,14 @@
   const card = document.querySelector(".card");
   const deadline = Date.now() + 60_000;
 
+  if (window.matchMedia("(hover: none), (pointer: coarse)").matches) {
+    card.addEventListener("click", (event) => {
+      if (!event.target.closest(".gift-button")) {
+        card.classList.toggle("is-open");
+      }
+    });
+  }
+
   const countdownInterval = window.setInterval(() => {
     const seconds = Math.max(0, Math.ceil((deadline - Date.now()) / 1000));
     secondsRemaining.textContent = seconds;
