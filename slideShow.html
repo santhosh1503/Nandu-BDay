@@ -13,9 +13,11 @@
 			width: 100%;
 			min-height: 100vh;
 			display: flex;
-			justify-content: center;
+			flex-direction: column;
+			justify-content: flex-start;
 			align-items: center;
-			overflow: hidden;
+			padding-top: 26px;
+			overflow-x: hidden;
 			font-family: Arial, sans-serif;
 			background: linear-gradient(135deg, #ffebf0 0%, #f9d9ff 30%, #d8f4ff 70%, #fff4c2 100%);
 		}
@@ -56,14 +58,16 @@
 			100% { transform: translateY(-110vh) scale(1) rotate(-2deg); opacity: 0.85; }
 		}
 		.title-birthday {
-			position: absolute;
-			top: 30px;
-			left: 50%;
-			transform: translateX(-50%);
+			position: relative;
+			top: 0;
+			left: 0;
+			transform: none;
 			text-align: center;
 			z-index: 5;
 			color: #8b1e5d;
 			text-shadow: 0 4px 12px rgba(255,255,255,0.7);
+			pointer-events: none;
+			margin-bottom: 18px;
 		}
 		.title-birthday h1 {
 			font-size: clamp(2rem, 4vw, 4rem);
@@ -76,11 +80,67 @@
 			margin-top: 5px;
 			font-weight: 600;
 		}
+		.music-toggle {
+			position: fixed;
+			top: 18px;
+			right: 18px;
+			z-index: 20;
+			padding: 10px 16px;
+			border: none;
+			border-radius: 999px;
+			background: linear-gradient(135deg, #ff4d88, #ff8a5b);
+			color: #fff;
+			font-size: 0.95rem;
+			font-weight: 700;
+			letter-spacing: 0.04em;
+			box-shadow: 0 8px 20px rgba(255, 80, 120, 0.35);
+			cursor: pointer;
+		}
+		.music-toggle:active {
+			transform: scale(0.98);
+		}
+		.confetti-layer {
+			position: fixed;
+			inset: 0;
+			pointer-events: none;
+			overflow: hidden;
+			z-index: 15;
+		}
+		.confetti-piece {
+			position: absolute;
+			top: -20px;
+			width: 10px;
+			height: 18px;
+			border-radius: 3px;
+			opacity: 0.9;
+			box-shadow: 0 0 8px rgba(255,255,255,0.55);
+			animation: confetti-fall linear forwards;
+		}
+		.confetti-piece.star {
+			clip-path: polygon(50% 0%, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0% 50%, 38% 38%);
+			height: 12px;
+			width: 12px;
+		}
+		@keyframes confetti-fall {
+			0% {
+				transform: translate3d(0, 0, 0) rotate(0deg) scale(0.8);
+				opacity: 0;
+			}
+			12% { opacity: 1; }
+			40% {
+				transform: translate3d(calc(var(--drift) * 0.3), 38vh, 0) rotate(180deg) scale(1.05);
+			}
+			100% {
+				transform: translate3d(var(--drift), 110vh, 0) rotate(620deg) scale(0.85);
+				opacity: 0;
+			}
+		}
 		.slide-container{
 			position: relative;
 			width: min(95vw, 1100px);
 			height: 420px;
 			max-width: 100%;
+			margin-top: 0;
 			border: 3px solid #ede6d6;
 			box-shadow: 0 0 8px 2px rgba(0,0,0,0.2);
 			transition: width 0.3s ease, height 0.3s ease;
@@ -185,9 +245,52 @@
 			}
 		}
 
+		@media (max-width: 768px) {
+			body {
+				padding-top: 20px;
+			}
+
+			.title-birthday {
+				margin-bottom: 14px;
+			}
+
+			.slide-container {
+				height: 300px;
+			}
+		}
+
+		@media (max-width: 480px) {
+			body {
+				padding-top: 18px;
+			}
+
+			.music-toggle {
+				top: 12px;
+				right: 12px;
+				padding: 9px 12px;
+				font-size: 0.8rem;
+			}
+
+			.title-birthday h1 {
+				font-size: clamp(1.7rem, 8vw, 2.5rem);
+			}
+
+			.title-birthday p {
+				font-size: clamp(0.9rem, 3.5vw, 1.1rem);
+			}
+
+			.slide-container {
+				height: 230px;
+			}
+		}
+
 	</style>
 </head>
 <body>
+
+<button class="music-toggle" id="musicToggle" type="button" aria-label="Play or pause birthday music">Play Song</button>
+<audio id="birthdayAudio" loop preload="auto" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3"></audio>
+<div class="confetti-layer" id="confettiLayer" aria-hidden="true"></div>
 
 <div class="title-birthday">
 	<h1>Happy Birthday</h1>
@@ -209,6 +312,10 @@
 		<img src="image-3.jpg">
 		<img src="image-4.jpg">
 		<img src="image-5.jpg">
+		<img src="image-6.jpg">
+		<img src="image-7.jpg">
+		<img src="image-8.jpg">
+		<img src="image-9.jpg">
 	</div>
 
 	<div class="buttons">
@@ -216,28 +323,78 @@
 		<span class="prev">&#10094;</span>
 	</div>
 
-	<div class="dotsContainer">
-		<div class="dot active" attr='0' onclick="switchImage(this)"></div>
-		<div class="dot" attr='1' onclick="switchImage(this)"></div>
-		<div class="dot" attr='2' onclick="switchImage(this)"></div>
-		<div class="dot" attr='3' onclick="switchImage(this)"></div>
-		<div class="dot" attr='4' onclick="switchImage(this)"></div>
-	</div>
+	<div class="dotsContainer"></div>
 
 </div>
 
 <script type="text/javascript">
 	
-	// Access the Images
+	const musicToggle = document.getElementById('musicToggle');
+	const birthdayAudio = document.getElementById('birthdayAudio');
+	const confettiLayer = document.getElementById('confettiLayer');
+	const colors = ['#ff4d88', '#ffd166', '#7bdff2', '#7df9a1', '#b197fc', '#ff9f6e', '#ffffff'];
+	let isSongPlaying = false;
+
+	function createConfettiBurst() {
+		for (let i = 0; i < 60; i++) {
+			const piece = document.createElement('span');
+			piece.className = `confetti-piece ${Math.random() > 0.7 ? 'star' : ''}`;
+			piece.style.left = `${Math.random() * 100}%`;
+			piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+			piece.style.setProperty('--drift', `${(Math.random() - 0.5) * 260}px`);
+			piece.style.animationDuration = `${3.4 + Math.random() * 2.3}s`;
+			piece.style.animationDelay = `${Math.random() * 0.2}s`;
+			confettiLayer.appendChild(piece);
+			setTimeout(() => piece.remove(), 6000);
+		}
+	}
+
+	async function toggleBirthdaySong() {
+		if (!birthdayAudio) return;
+
+		if (!isSongPlaying) {
+			isSongPlaying = true;
+			musicToggle.textContent = 'Playing';
+			try {
+				await birthdayAudio.play();
+			} catch (error) {
+				console.warn('Audio playback was blocked by the browser:', error);
+				isSongPlaying = false;
+				musicToggle.textContent = 'Play Song';
+			}
+		} else {
+			isSongPlaying = false;
+			musicToggle.textContent = 'Play Song';
+			birthdayAudio.pause();
+			birthdayAudio.currentTime = 0;
+		}
+	}
+
+	musicToggle.addEventListener('click', toggleBirthdaySong);
+	createConfettiBurst();
+	setInterval(createConfettiBurst, 2200);
+
 	const slideImages = document.querySelectorAll('.slides img');
-	// Access the next and prev buttons
 	const next = document.querySelector('.next');
 	const prev = document.querySelector('.prev');
-	// Access the indicators
-	const dots = document.querySelectorAll('.dot');
+	const dotsContainer = document.querySelector('.dotsContainer');
 	const container = document.querySelector('.slide-container');
 	let counter = 0;
 	let autoSlideTimer = null;
+
+	slideImages.forEach((image, index) => {
+		image.classList.toggle('active', index === 0);
+		image.style.left = index === 0 ? '0%' : '-100%';
+		image.style.animation = 'none';
+
+		const dot = document.createElement('div');
+		dot.className = `dot ${index === 0 ? 'active' : ''}`;
+		dot.setAttribute('attr', String(index));
+		dot.addEventListener('click', () => switchImage(dot));
+		dotsContainer.appendChild(dot);
+	});
+
+	const dots = document.querySelectorAll('.dot');
 
 	function indicators() {
 		dots.forEach((dot, index) => {
@@ -269,26 +426,25 @@
 
 		currentImage.classList.remove('active');
 		currentImage.style.animation = direction === 'next' ? 'next1 0.5s ease-in forwards' : 'prev1 0.5s ease-in forwards';
+		currentImage.style.left = '0%';
 
 		counter = (newIndex + slideImages.length) % slideImages.length;
-
 		const nextImage = slideImages[counter];
 		if (nextImage) {
 			nextImage.classList.add('active');
 			nextImage.style.animation = direction === 'next' ? 'next2 0.5s ease-in forwards' : 'prev2 0.5s ease-in forwards';
+			nextImage.style.left = '0%';
 			setContainerSize(nextImage);
 		}
 
 		indicators();
 	}
 
-	// Code for next button
 	next.addEventListener('click', () => {
 		updateSlide(counter + 1, 'next');
 		startAutoSliding();
 	});
 
-	// Code for prev button
 	prev.addEventListener('click', () => {
 		updateSlide(counter - 1, 'prev');
 		startAutoSliding();
@@ -301,23 +457,21 @@
 		}, 3000);
 	}
 
-	// Auto sliding
 	setContainerSize(slideImages[0]);
 	startAutoSliding();
 
-	// Stop auto sliding when mouse is over
-	container.addEventListener('mouseover', () => {
+	container.addEventListener('mouseenter', () => {
 		clearInterval(autoSlideTimer);
+	});
+
+	container.addEventListener('mouseleave', () => {
+		startAutoSliding();
 	});
 
 	window.addEventListener('resize', () => {
 		setContainerSize(slideImages[counter]);
 	});
 
-	// Resume sliding when mouse is out
-	container.addEventListener('mouseout', startAutoSliding);
-
-	// Add click event to the indicator
 	function switchImage(currentImage) {
 		const imageId = Number(currentImage.getAttribute('attr'));
 		if (Number.isNaN(imageId) || imageId === counter) {

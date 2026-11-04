@@ -1,11 +1,12 @@
 body{
- 
-    height: 100%;
+    min-height: 100vh;
     margin: 0;
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-image: url(https://www.icegif.com/wp-content/uploads/2022/10/icegif-310.gif);  
     background-size: cover;
+    background-position: center;
+    overflow-x: hidden;
 }
 .countdown {
 	position: fixed;
@@ -205,4 +206,126 @@ body{
 .gift-button:focus-visible {
 	outline: 3px solid #fff;
 	outline-offset: 4px;
+}
+
+@media (max-width: 768px) {
+	.countdown {
+		width: min(92vw, 360px);
+		padding: 24px 18px 20px;
+	}
+
+	.countdown-title {
+		font-size: 24px;
+	}
+
+	.countdown-message {
+		font-size: 15px;
+	}
+
+	.countdown-value {
+		font-size: 52px;
+	}
+
+	.card {
+		width: min(88vw, 360px);
+		height: 430px;
+		margin-top: 40px;
+	}
+
+	.card .text-container #head {
+		font-size: 1.35em;
+		margin: 28px auto 26px;
+	}
+
+	.card .text-container h5 {
+		font-size: 1em;
+	}
+
+	.card p {
+		font-size: 1em;
+	}
+
+	.gift-button {
+		width: calc(100% - 26px);
+		font-size: 14px;
+		padding: 12px 16px;
+	}
+}
+
+@media (max-width: 480px) {
+	.countdown {
+		top: 35%;
+		width: min(90vw, 300px);
+		padding: 18px 12px 16px;
+	}
+
+	.countdown-title {
+		font-size: 22px;
+	}
+
+	.countdown-message {
+		font-size: 14px;
+	}
+
+	.countdown-value {
+		font-size: 44px;
+	}
+
+	.countdown-label {
+		font-size: 11px;
+	}
+
+	.card {
+		width: min(86vw, 300px);
+		height: 390px;
+		margin-top: 26px;
+		border-width: 8px;
+	}
+
+	.card .front,
+	.card .back {
+		border-width: 8px;
+		margin: -8px 0 0 -8px;
+	}
+
+	.card .text-container {
+		width: 84%;
+	}
+
+	.card .text-container #head {
+		font-size: 1.2em;
+		margin: 24px auto 18px;
+	}
+
+	.card .text-container h5 {
+		font-size: 0.95em;
+	}
+
+	.card p {
+		font-size: 0.92em;
+		line-height: 1.35;
+	}
+
+	.imgset {
+		margin-bottom: -175px;
+	}
+
+	.gift-button {
+		bottom: 14px;
+		width: calc(100% - 18px);
+		padding: 11px 12px;
+	}
+}
+
+@media (hover: none), (pointer: coarse) {
+	.card .front,
+	.card .back,
+	.card:hover .front,
+	.card:hover .back {
+		transform: none;
+	}
+
+	.card {
+		overflow: hidden;
+	}
 }
